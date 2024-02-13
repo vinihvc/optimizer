@@ -6,9 +6,9 @@ import { AnimatePresence, motion } from "framer-motion"
 import { ArrowDown, UploadCloud, X } from "lucide-react"
 import * as React from "react"
 
-interface CopyButtonProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface UploadProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const Upload = (props: CopyButtonProps) => {
+export const Upload = (props: UploadProps) => {
 	const { className, ...rest } = props
 
 	const reactId = React.useId()
