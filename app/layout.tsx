@@ -59,7 +59,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 				<Providers>
 					<Header />
 
-					<main className="flex flex-1 flex-col">{children}</main>
+					<main className="flex flex-1 flex-col justify-center">
+						{children}
+					</main>
 
 					<Footer />
 

@@ -1,5 +1,5 @@
 export const SEO = {
-	title: "Vini Boilerplate",
+	title: "Optimizer",
 	description: "Start your project with Next and all modern technologies.",
 	keywords: [
 		"next",

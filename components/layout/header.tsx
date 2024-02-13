@@ -11,9 +11,7 @@ export const Header = () => {
 			<div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0 ">
 				<div>
 					<Link href="/" className="flex items-center space-x-2">
-						<span className="text-xl font-bold tracking-tight">
-							Vini Boilerplate
-						</span>
+						<span className="text-xl font-bold tracking-tight">Optimizer</span>
 					</Link>
 				</div>
 
