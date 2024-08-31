@@ -6,22 +6,12 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"test": "vitest",
-		"test:ui": "vitest --ui",
 		"check": "biome check .",
 		"check:fix": "biome check . --apply",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint . --apply ",
 		"format": "biome format .",
-		"format:fix": "biome format . --write",
-		"prepare": "husky install",
-		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
-	},
-	"lint-staged": {
-		"*.{js,ts,tsx,json,md,mdx}": [
-			"biome check --apply --no-errors-on-unmatched"
-		]
+		"format:fix": "biome format . --write"
 	},
 	"dependencies": {
 		"@radix-ui/react-dropdown-menu": "^2.0.6",

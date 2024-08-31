@@ -4,7 +4,6 @@ export const SEO = {
 	keywords: [
 		"next",
 		"typescript",
-		"storybook",
 		"tailwind",
 		"vitest",
 		"radix",

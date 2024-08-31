@@ -1,72 +1,27 @@
-import { Metadata, Viewport } from "next"
-import { Inter as FontSans } from "next/font/google"
+import type { Metadata, Viewport } from "next"
 
 import { SEO } from "@/configs/seo"
 import "@/styles/globals.css"
-import { Providers } from "./providers"
 
 import { MediaQueriesDebug } from "@/components/debug/media-queries"
 import { Footer } from "@/components/layout/footer"
 import { Header } from "@/components/layout/header"
+import { fontSans } from "@/lib/font"
+import { seoMetadata } from "@/lib/seo"
 
-const fontSans = FontSans({
-	subsets: ["latin"],
-	variable: "--font-sans",
-})
+export const metadata: Metadata = seoMetadata
 
-type RootLayoutProps = {
-	children: React.ReactNode
-}
-
-export const viewport: Viewport = {
-	themeColor: [
-		{ media: "(prefers-color-scheme: light)", color: "#FFF" },
-		{ media: "(prefers-color-scheme: dark)", color: "000" },
-	],
-}
-
-export const metadata: Metadata = {
-	metadataBase: new URL(SEO.url),
-	title: { absolute: SEO.title, template: `%s // ${SEO.title}` },
-	applicationName: SEO.title,
-	description: SEO.description,
-	keywords: SEO.keywords,
-	openGraph: {
-		locale: "en",
-		title: SEO.title,
-		description: SEO.description,
-		url: SEO.url,
-		type: "website",
-		images: [
-			{
-				url: "/images/thumb.png",
-				width: 1200,
-				height: 630,
-				alt: SEO.description,
-			},
-		],
-		siteName: SEO.title,
-	},
-	twitter: {
-		site: SEO.twitter,
-	},
-}
-
-const RootLayout = ({ children }: RootLayoutProps) => {
+const RootLayout = ({ children }: React.PropsWithChildren) => {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={fontSans.variable}>
-				<Providers>
-					<Header />
+				<Header />
 
-					<main className="flex flex-1 flex-col justify-center">
-						{children}
-					</main>
+				<main className="flex flex-1 flex-col justify-center">{children}</main>
 
-					<Footer />
+				<Footer />
 
-					<MediaQueriesDebug />
-				</Providers>
+				<MediaQueriesDebug />
 			</body>
 		</html>
 	)
