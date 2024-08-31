@@ -11,12 +11,11 @@ A Next.js template for building apps with Radix UI and Tailwind CSS.
 ## Features
 
 - Radix
-- Tailwind 
+- Tailwind
 - Lucide icons
 - Dark mode ready
 - Storybook
 - Biome
-- Husky + lint-staged
 - [shadcn/ui](https://ui.shadcn.com/) components
 
 ### Class Merging
