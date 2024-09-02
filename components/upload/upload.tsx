@@ -1,25 +1,29 @@
 "use client"
 
-import { ArrowRight, Download, UploadCloud, X } from "lucide-react"
-import type * as React from "react"
+import { UploadCloud } from "lucide-react"
+import * as React from "react"
 
-import { cn } from "@/utils/cn"
-import { downloadElement } from "@/utils/download"
+import { cn } from "@/lib/cn"
 import { FileUpload } from "@ark-ui/react"
-import { downloadZip } from "client-zip"
-import Compressor from "compressorjs"
-import Image from "next/image"
 import { Button } from "../ui/button"
 import { ScrollArea } from "../ui/scroll-area"
-import { compressImage } from "./upload.utils"
+import { Switch } from "../ui/switch"
+import { UploadItem } from "./upload.item"
 
 interface UploadProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const Upload = (props: UploadProps) => {
 	const { className, ...rest } = props
 
+	const [convertImage, setConvertImage] = React.useState(true)
+
 	return (
-		<FileUpload.Root maxFiles={20} accept="image/*">
+		<FileUpload.Root
+			className={cn("bg-foreground/10 backdrop-blur p-5", className)}
+			maxFiles={20}
+			accept="image/*"
+			{...rest}
+		>
 			<FileUpload.Label className="sr-only">File Upload</FileUpload.Label>
 
 			<FileUpload.Dropzone
@@ -29,7 +33,7 @@ export const Upload = (props: UploadProps) => {
 					"space-y-2",
 					"text-sm",
 					"bg-background",
-					"border-2 border-neutral-700 border-dashed",
+					"border-[2px] border-neutral-700 border-dashed border-b-0",
 					"transition cursor-pointer",
 					"hover:bg-neutral-900",
 					className,
@@ -39,7 +43,21 @@ export const Upload = (props: UploadProps) => {
 				<UploadCloud />
 			</FileUpload.Dropzone>
 
-			<FileUpload.ItemGroup className="mt-5 space-y-2">
+			<div className="bg-background/50 p-2">
+				<div className="flex items-center justify-end gap-2">
+					<label htmlFor="convert" className="text-sm">
+						Convert my images automatically
+					</label>
+
+					<Switch
+						id="convert"
+						checked={convertImage}
+						onCheckedChange={setConvertImage}
+					/>
+				</div>
+			</div>
+
+			<FileUpload.ItemGroup className="space-y-2">
 				<FileUpload.Context>
 					{({ acceptedFiles }) => {
 						const hasFiles = acceptedFiles.length > 0
@@ -50,109 +68,14 @@ export const Upload = (props: UploadProps) => {
 							<>
 								<ScrollArea className={cn("h-48 border p-1")}>
 									<div className="space-y-1">
-										{acceptedFiles.map((file, index) => {
-											const fileName = file.name.split(".")[0].substring(0, 20)
-
-											const fileFormat = file.name.split(".")[1]
-
-											const convertTo = true
-
-											const compressedImage = compressImage(file)
-
-											return (
-												<FileUpload.Item
-													className="flex p-1 text-xs bg-neutral-800 border-neutral-700 justify-between items-center animate-in slide-in-from-top-10 fade-in-0"
-													key={`${file.name}-${index}`}
-													file={file}
-												>
-													<div className="flex items-center gap-2">
-														<FileUpload.ItemPreview type="image/*">
-															<FileUpload.ItemPreviewImage asChild>
-																<Image
-																	className="object-scale-down text-[0px] size-10 bg-foreground bg-center"
-																	src={URL.createObjectURL(file)}
-																	alt={file.name}
-																	width={40}
-																	height={40}
-																/>
-															</FileUpload.ItemPreviewImage>
-														</FileUpload.ItemPreview>
-
-														<div className="space-y-1">
-															<FileUpload.ItemName className="font-semibold line-clamp-1">
-																{fileName}
-															</FileUpload.ItemName>
-
-															<div className="flex items-center gap-0.5">
-																<span
-																	className={cn(
-																		"inline-flex px-1 py-0.5 text-xs",
-																		{
-																			"bg-red-700": fileFormat === "png",
-																			"bg-blue-700":
-																				fileFormat === "jpg" ||
-																				fileFormat === "jpeg",
-																			"bg-green-700": fileFormat === "svg",
-																			"line-through opacity-80": convertTo,
-																		},
-																	)}
-																>
-																	{fileFormat}
-																</span>
-
-																{convertTo && (
-																	<>
-																		<ArrowRight className="size-3" />
-																		<span className="inline-flex px-1 py-0.5 text-xs bg-green-700">
-																			webp
-																		</span>
-																	</>
-																)}
-															</div>
-														</div>
-													</div>
-
-													<div className="flex items-center gap-2">
-														<div className="flex flex-col gap-0.5">
-															<div className="text-red-500">
-																{Intl.NumberFormat("en", {
-																	notation: "compact",
-																	style: "unit",
-																	unit: "byte",
-																	unitDisplay: "narrow",
-																}).format(acceptedFiles[index].size)}
-															</div>
-
-															<div className="text-green-500">
-																{Intl.NumberFormat("en", {
-																	notation: "compact",
-																	style: "unit",
-																	unit: "byte",
-																	unitDisplay: "narrow",
-																}).format(compressedImage.size)}
-															</div>
-														</div>
-
-														<div className="flex flex-row-reverse gap-2">
-															<Button
-																variant="ghost"
-																size="icon"
-																onClick={() => downloadElement(file)}
-															>
-																<Download className="size-4" />
-																<span className="sr-only">Download</span>
-															</Button>
-
-															<FileUpload.ItemDeleteTrigger asChild>
-																<Button variant="ghost" size="icon">
-																	<X className="size-4" />
-																</Button>
-															</FileUpload.ItemDeleteTrigger>
-														</div>
-													</div>
-												</FileUpload.Item>
-											)
-										})}
+										{acceptedFiles.map((file, index) => (
+											<UploadItem
+												key={`${file.name}-${index}`}
+												className=""
+												convertImage={convertImage}
+												file={file}
+											/>
+										))}
 									</div>
 								</ScrollArea>
 
